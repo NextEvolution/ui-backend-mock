@@ -1,0 +1,43 @@
+{
+  "sales": [
+    {
+      "customer_name": "Smith, Sally",
+      "product": {
+        "link": "https://facebook.com/somelink",
+        "name": "Cassie Skirt",
+        "description": "Beautiful red skirt"
+      },
+      "buying_comment": {
+        "text": "That is mine! Sold!",
+        "link": "https://facebook.com/somelink"
+      },
+      "date": "2016-05-20T06:59:37+0000"
+    },
+    {
+      "customer_name": "Smith, Sally",
+      "product": {
+        "link": "https://facebook.com/somelink",
+        "name": "Cassie Skirt",
+        "description": "Beautiful red skirt"
+      },
+      "buying_comment": {
+        "text": "That is mine! Sold!",
+        "link": "https://facebook.com/somelink"
+      },
+      "date": "2016-05-20T06:59:37+0000"
+    },
+    {
+      "customer_name": "Smith, Sally",
+      "product": {
+        "link": "https://facebook.com/somelink",
+        "name": "Cassie Skirt",
+        "description": "Beautiful red skirt"
+      },
+      "buying_comment": {
+        "text": "That is mine! Sold!",
+        "link": "https://facebook.com/somelink"
+      },
+      "date": "2016-05-20T06:59:37+0000"
+    }
+  ]
+}
