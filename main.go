@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"io/ioutil"
+	"nextevolution/ui-backend-mock/types"
+	"encoding/json"
 )
 
 func main() {
@@ -26,6 +28,12 @@ func main() {
 			return
 		}
 
+		if r.Header.Get("AuthToken") == "bad_token" {
+			w.WriteHeader(http.StatusUnauthorized)
+			fmt.Fprintf(w, "401 unauthorized")
+			return
+		}
+
 		w.Header().Set("Content-Type", "application/json")
 		GiveResponseFile("responses/GET_api_sales.json",w)
 	})
@@ -38,13 +46,30 @@ func main() {
 			return
 		}
 
-		if r.Header.Get("FacebookToken") == "" {
+		//unmarshal data
+		var loginReq types.FbLoginReq
+
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprintf(w, "400 bad request")
+			fmt.Fprintf(w, "400 bad request - Can't read body")
 			return
 		}
 
-		if r.Header.Get("FacebookToken") == "bad_token" {
+		err = json.Unmarshal(body, &loginReq)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(w, "400 bad request - Can't read json")
+			return
+		}
+
+		if loginReq.FbToken == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(w, "400 bad request - empty token")
+			return
+		}
+
+		if loginReq.FbToken == "bad_token" {
 			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Fprintf(w, "401 unauthorized")
 			return

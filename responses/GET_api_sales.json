@@ -1,43 +1,55 @@
 {
   "sales": [
     {
-      "customer_name": "Smith, Sally",
+      "customer": {
+        "name": "Bullock, Sandra",
+        "fb_id": "1157554369"
+      },
       "product": {
-        "link": "https://facebook.com/somelink",
-        "name": "Cassie Skirt",
-        "description": "Beautiful red skirt"
+        "fb_id": "10105662922539680",
+        "album": "Leggings",
+        "description": "Red Leggings",
+        "picture_url": "https://scontent-dfw1-1.xx.fbcdn.net/v/t1.0-9/13512087_10105662922539680_8206134852945522753_n.jpg?oh=15acfa0af1282c80c7b3d92dbaa7d01a&oe=5834A13A"
       },
-      "buying_comment": {
+      "sale_comment": {
         "text": "That is mine! Sold!",
-        "link": "https://facebook.com/somelink"
+        "fb_id": "0987654321233243"
       },
-      "date": "2016-05-20T06:59:37+0000"
+      "date": 1468815383
     },
     {
-      "customer_name": "Smith, Sally",
+      "customer": {
+        "name": "Bullock, Sandra",
+        "fb_id": "1157554369"
+      },
       "product": {
-        "link": "https://facebook.com/somelink",
-        "name": "Cassie Skirt",
-        "description": "Beautiful red skirt"
+        "fb_id": "10105662921965830",
+        "album": "Leggings",
+        "description": "Grey Leggings",
+        "picture_url": "https://scontent-dfw1-1.xx.fbcdn.net/v/t1.0-9/13511970_10105662921965830_3796117725891030449_n.jpg?oh=7394fa5f05c3ee82b7c4fa60ed3b4d56&oe=582AE7BE"
       },
-      "buying_comment": {
-        "text": "That is mine! Sold!",
-        "link": "https://facebook.com/somelink"
+      "sale_comment": {
+        "text": "sold",
+        "fb_id": "0987654321233243"
       },
-      "date": "2016-05-20T06:59:37+0000"
+      "date": 1468816237
     },
     {
-      "customer_name": "Smith, Sally",
+      "customer": {
+        "name": "Cook, Rachel",
+        "fb_id": "1157554369"
+      },
       "product": {
-        "link": "https://facebook.com/somelink",
-        "name": "Cassie Skirt",
-        "description": "Beautiful red skirt"
+        "fb_id": "10105662922539680",
+        "album": "Leggings",
+        "description": "Red Leggings",
+        "picture_url": "https://scontent-dfw1-1.xx.fbcdn.net/v/t1.0-9/13512087_10105662922539680_8206134852945522753_n.jpg?oh=15acfa0af1282c80c7b3d92dbaa7d01a&oe=5834A13A"
       },
-      "buying_comment": {
-        "text": "That is mine! Sold!",
-        "link": "https://facebook.com/somelink"
+      "sale_comment": {
+        "text": "SOLD",
+        "fb_id": "0987654321233243"
       },
-      "date": "2016-05-20T06:59:37+0000"
+      "date": 1468816222
     }
   ]
 }
