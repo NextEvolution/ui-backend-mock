@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+
 	http.HandleFunc("/alive", func(w http.ResponseWriter, r *http.Request) {
 		GiveResponseFile("responses/GET_alive.txt",w)
 	})
@@ -79,7 +80,7 @@ func main() {
 		GiveResponseFile("responses/POST_api_login.json",w)
 	})
 
-	http.Handle("/", http.FileServer(http.Dir("../ui-frontend/src")))
+	http.Handle("/", http.FileServer(http.Dir("../ui-frontend/dist")))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
@@ -90,4 +91,5 @@ func GiveResponseFile(filename string, w http.ResponseWriter){
 		panic(fmt.Sprintf("reading sample file (%s)failed", filename))
 	}
 	fmt.Fprintf(w, string(file))
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 }
