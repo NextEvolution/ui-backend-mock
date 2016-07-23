@@ -57,7 +57,7 @@ func main() {
 
 	// Facebook Login
 	http.HandleFunc("/api/login", func(w http.ResponseWriter, r *http.Request){
-		if r.Method != "POST" {
+		if r.Method != "POST" || r.Method != "OPTIONS"{
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			fmt.Fprintf(w, "405 method not allowed")
 			return
@@ -92,6 +92,7 @@ func main() {
 			return
 		}
 
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json")
 		GiveResponseFile("responses/POST_api_login.json",w)
 	})
@@ -113,9 +114,6 @@ func GiveResponseFile(filename string, w http.ResponseWriter){
 
 func Log(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		//todo put this somewhere more appropriate
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-
 		log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL)
 		handler.ServeHTTP(w, r)
 	})
