@@ -11,20 +11,21 @@ import (
 )
 
 func main() {
-	configPath := os.Args[1]
-	if configPath == "" {
-		log.Panic("Please supply a config file path")
+
+	if len(os.Args) <= 1  || os.Args[1] == ""{
+		log.Panic("Please supply a config file path like: ./mock config.json")
 	}
+	configPath := os.Args[1]
 
 	rawConfig, err := ioutil.ReadFile(configPath)
 	if err != nil {
-		log.Panic(fmt.Sprintf("reading config file (%s)failed", configPath))
+		log.Panic(fmt.Sprintf("failed to read config file %s", configPath))
 	}
 
 	config := &types.Config{}
 	err = json.Unmarshal(rawConfig, &config)
 	if err != nil {
-		log.Panic(fmt.Sprintf("unable to unmarshal config file (%s)", configPath))
+		log.Panic(fmt.Sprintf("unable to unmarshal config file %s", configPath))
 	}
 
 	http.HandleFunc("/alive", func(w http.ResponseWriter, r *http.Request) {
