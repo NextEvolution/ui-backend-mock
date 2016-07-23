@@ -7,9 +7,25 @@ import (
 	"io/ioutil"
 	"nextevolution/ui-backend-mock/types"
 	"encoding/json"
+	"os"
 )
 
 func main() {
+	configPath := os.Args[1]
+	if configPath == "" {
+		log.Panic("Please supply a config file path")
+	}
+
+	rawConfig, err := ioutil.ReadFile(configPath)
+	if err != nil {
+		log.Panic(fmt.Sprintf("reading config file (%s)failed", configPath))
+	}
+
+	config := &types.Config{}
+	err = json.Unmarshal(rawConfig, &config)
+	if err != nil {
+		log.Panic(fmt.Sprintf("unable to unmarshal config file (%s)", configPath))
+	}
 
 	http.HandleFunc("/alive", func(w http.ResponseWriter, r *http.Request) {
 		GiveResponseFile("responses/GET_alive.txt",w)
@@ -80,9 +96,11 @@ func main() {
 		GiveResponseFile("responses/POST_api_login.json",w)
 	})
 
-	http.Handle("/", http.FileServer(http.Dir("../ui-frontend/dist")))
+	http.Handle("/", http.FileServer(http.Dir(config.StaticFilePath)))
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Printf("Listening on port: %d", config.Port)
+	log.Printf("Static file path: %s", config.StaticFilePath)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Port), Log(http.DefaultServeMux)))
 }
 
 func GiveResponseFile(filename string, w http.ResponseWriter){
@@ -91,5 +109,14 @@ func GiveResponseFile(filename string, w http.ResponseWriter){
 		panic(fmt.Sprintf("reading sample file (%s)failed", filename))
 	}
 	fmt.Fprintf(w, string(file))
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+}
+
+func Log(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		//todo put this somewhere more appropriate
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+
+		log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL)
+		handler.ServeHTTP(w, r)
+	})
 }
