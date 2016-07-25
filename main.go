@@ -58,7 +58,7 @@ func main() {
 
 	// Facebook Login
 	http.HandleFunc("/api/login", func(w http.ResponseWriter, r *http.Request){
-		if r.Method != "POST" || r.Method != "OPTIONS"{
+		if r.Method != "POST" {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			fmt.Fprintf(w, "405 method not allowed")
 			return
@@ -93,7 +93,6 @@ func main() {
 			return
 		}
 
-		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json")
 		GiveResponseFile("responses/POST_api_login.json",w)
 	})
@@ -102,7 +101,7 @@ func main() {
 
 	log.Printf("Listening on port: %d", config.Port)
 	log.Printf("Static file path: %s", config.StaticFilePath)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Port), Log(http.DefaultServeMux)))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Port), EveryCall(http.DefaultServeMux)))
 }
 
 func GiveResponseFile(filename string, w http.ResponseWriter){
@@ -113,9 +112,21 @@ func GiveResponseFile(filename string, w http.ResponseWriter){
 	fmt.Fprintf(w, string(file))
 }
 
-func Log(handler http.Handler) http.Handler {
+func EveryCall(handler http.Handler) http.Handler {
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL)
+
+		//if r.Header.Get("Origin")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD")
+		w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type, Response-Type, If-Modified-Since")
+		w.Header().Set("Access-Control-Expose-Header", "Content-disposition, X-Pagination-Current-Page, X-Pagination-Page-Count, X-Pagination-Per-Page, X-Pagination-Total-Count, Link")
+		if r.Method == "OPTIONS" {
+			//return just headers
+			return
+		}
 		handler.ServeHTTP(w, r)
 	})
 }

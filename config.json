@@ -1,4 +1,9 @@
 {
   "port": 8080,
-  "static_file_path": "../ui-frontend/dist"
+  "static_file_path": "../ui-frontend/dist",
+  "origins": [
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://mel-orders.com"
+  ]
 }
