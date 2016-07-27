@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"os"
 )
-
+var config types.Config
 func main() {
 
 	if len(os.Args) <= 1  || os.Args[1] == ""{
@@ -22,7 +22,6 @@ func main() {
 		log.Panic(fmt.Sprintf("failed to read config file %s", configPath))
 	}
 
-	config := &types.Config{}
 	err = json.Unmarshal(rawConfig, &config)
 	if err != nil {
 		log.Panic(fmt.Sprintf("unable to unmarshal config file %s", configPath))
@@ -40,13 +39,13 @@ func main() {
 			return
 		}
 
-		if r.Header.Get("AuthToken") == "" {
+		if r.Header.Get("Authorization") == "" {
 			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Fprintf(w, "401 unauthorized")
 			return
 		}
 
-		if r.Header.Get("AuthToken") == "bad_token" {
+		if r.Header.Get("Authorization") == "bad_token" {
 			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Fprintf(w, "401 unauthorized")
 			return
@@ -117,7 +116,6 @@ func EveryCall(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL)
 
-		//if r.Header.Get("Origin")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD")
